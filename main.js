@@ -45,13 +45,16 @@ done.addEventListener('click', (event) => {
 });
 
 plus.addEventListener('click', (event) => {
-    duplication_check()
     if (last_sign === '') {
         if (current_num !== '') {
             result_num += parseFloat(current_num);
         }
     } else {
-        calculation(last_sign);
+        if (current_num !== '') {
+            calculation(last_sign);
+        } else {
+            return
+        }
     }
     last_sign = '+';
     expression_text += current_num;
@@ -62,13 +65,16 @@ plus.addEventListener('click', (event) => {
 });
 
 minus.addEventListener('click', (event) => {
-    duplication_check()
     if (last_sign === '') {
         if (current_num !== '') {
             result_num += parseFloat(current_num);
         }
     } else {
-        calculation(last_sign);
+        if (current_num !== '') {
+            calculation(last_sign);
+        } else {
+            return
+        }
     }
     last_sign = '-';
     expression_text += current_num;
@@ -79,13 +85,16 @@ minus.addEventListener('click', (event) => {
 });
 
 multiply.addEventListener('click', (event) => {
-    duplication_check()
     if (last_sign === '') {
         if (current_num !== '') {
             result_num += parseFloat(current_num);
         }
     } else {
-        calculation(last_sign);
+        if (current_num !== '') {
+            calculation(last_sign);
+        } else {
+            return
+        }
     }
     last_sign = '*';
     expression_text += current_num;
@@ -96,13 +105,16 @@ multiply.addEventListener('click', (event) => {
 });
 
 divide.addEventListener('click', (event) => {
-    duplication_check()
     if (last_sign === '') {
         if (current_num !== '') {
             result_num += parseFloat(current_num);
         }
     } else {
-        calculation(last_sign);
+        if (current_num !== '') {
+            calculation(last_sign);
+        } else {
+            return
+        }
     }
     last_sign = '/';
     expression_text += current_num;
@@ -127,8 +139,4 @@ function calculation(sign) {
             result_num = result_num / parseFloat(current_num);
             break;
     }
-}
-
-function duplication_check() {
-    console.log(expression_text[expression_text.length - 1]);
 }
