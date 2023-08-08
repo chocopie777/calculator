@@ -138,8 +138,16 @@ function result_formation() {
 
 function calculation_algorithm(new_sign) {
     if (last_sign === '') {
-        if (current_num !== '') {
-            result_num += parseFloat(current_num);
+        if (result_num === 0) {
+            if (current_num !== '') {
+                result_num += parseFloat(current_num);
+            }
+        } else {
+            if (current_num !== '') {
+                result_num = 0;
+                result_num += parseFloat(current_num);
+                expression_text = '';
+            }
         }
     } else {
         if (current_num !== '') {
