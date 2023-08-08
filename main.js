@@ -14,6 +14,7 @@ let expression_text = '';
 let current_num = '';
 let result_num = 0;
 let last_sign = '';
+let divide_by_zero = true;
 
 nums.forEach((item) => {
     item.addEventListener('click', (event) => {
@@ -37,24 +38,22 @@ nums.forEach((item) => {
 });
 
 clear.addEventListener('click', (event) => {
-    display_result.innerText = '0';
-    expression_text = '';
-    display_expression.innerText = '';
-    last_sign = '';
-    current_num = '';
-    result_num = 0;
-    isZero = true;
+    clear_display();
 });
 
 done.addEventListener('click', (event) => {
     if (last_sign !== '') {
         if (current_num !== '') {
             calculation(last_sign);
-            expression_text = parseFloat(result_num);
-            display_expression.innerText = '';
-            display_result.innerText = result_num;
-            last_sign = '';
-            current_num = '';
+            if (divide_by_zero) {
+                expression_text = parseFloat(result_num);
+                display_expression.innerText = '';
+                display_result.innerText = result_num;
+                last_sign = '';
+                current_num = '';
+            } else {
+                divide_by_zero = true;
+            }
         }
     }
 });
@@ -69,12 +68,11 @@ reverse.addEventListener('click', (event) => {
     } else {
         result_num = -result_num;
         display_result.innerText = result_num;
-        console.log(result_num);
     }
 });
 
 percent.addEventListener('click', (event) => {
-    if (result_num !== 0) {
+    if (result_num !== 0 && current_num !== '') {
         let per_result;
         if (last_sign === '*' || last_sign === '/') {
             per_result = parseFloat(current_num) / 100;
@@ -87,103 +85,47 @@ percent.addEventListener('click', (event) => {
 });
 
 plus.addEventListener('click', (event) => {
-    if (last_sign === '') {
-        if (current_num !== '') {
-            result_num += parseFloat(current_num);
-        }
-    } else {
-        if (current_num !== '') {
-            calculation(last_sign);
+    if (!calculation_algorithm('+')) {
+        if (divide_by_zero) {
+            last_sign = '+';
+            result_formation();
         } else {
-            const last_char = expression_text.slice(expression_text.length - 1,
-                expression_text.length);
-
-            if (last_char === '+' || last_char === '-' || last_char === '*'
-                || last_char === '/') {
-                expression_text = expression_text.slice(0, expression_text.length - 1) + '+';
-                display_expression.innerText = expression_text;
-                last_sign = '+';
-            }
-            return
+            divide_by_zero = true;
         }
     }
-    last_sign = '+';
-    result_formation();
 });
 
 minus.addEventListener('click', (event) => {
-    if (last_sign === '') {
-        if (current_num !== '') {
-            result_num += parseFloat(current_num);
-        }
-    } else {
-        if (current_num !== '') {
-            calculation(last_sign);
+    if (!calculation_algorithm('-')) {
+        if (divide_by_zero) {
+            last_sign = '-';
+            result_formation();
         } else {
-            const last_char = expression_text.slice(expression_text.length - 1,
-                expression_text.length);
-
-            if (last_char === '+' || last_char === '-' || last_char === '*'
-                || last_char === '/') {
-                expression_text = expression_text.slice(0, expression_text.length - 1) + '-';
-                display_expression.innerText = expression_text;
-                last_sign = '-';
-            }
-            return;
+            divide_by_zero = true;
         }
     }
-    last_sign = '-';
-    result_formation();
 });
 
 multiply.addEventListener('click', (event) => {
-    if (last_sign === '') {
-        if (current_num !== '') {
-            result_num += parseFloat(current_num);
-        }
-    } else {
-        if (current_num !== '') {
-            calculation(last_sign);
+    if (!calculation_algorithm('*')) {
+        if (divide_by_zero) {
+            last_sign = '*';
+            result_formation();
         } else {
-            const last_char = expression_text.slice(expression_text.length - 1,
-                expression_text.length);
-
-            if (last_char === '+' || last_char === '-' || last_char === '*'
-                || last_char === '/') {
-                expression_text = expression_text.slice(0, expression_text.length - 1) + '*';
-                display_expression.innerText = expression_text;
-                last_sign = '*';
-            }
-            return
+            divide_by_zero = true;
         }
     }
-    last_sign = '*';
-    result_formation();
 });
 
 divide.addEventListener('click', (event) => {
-    if (last_sign === '') {
-        if (current_num !== '') {
-            result_num += parseFloat(current_num);
-        }
-    } else {
-        if (current_num !== '') {
-            calculation(last_sign);
+    if (!calculation_algorithm('/')) {
+        if (divide_by_zero) {
+            last_sign = '/';
+            result_formation();
         } else {
-            const last_char = expression_text.slice(expression_text.length - 1,
-                expression_text.length);
-
-            if (last_char === '+' || last_char === '-' || last_char === '*'
-                || last_char === '/') {
-                expression_text = expression_text.slice(0, expression_text.length - 1) + '/';
-                display_expression.innerText = expression_text;
-                last_sign = '/';
-            }
-            return
+            divide_by_zero = true;
         }
     }
-    last_sign = '/';
-    result_formation();
 });
 
 function result_formation() {
@@ -192,6 +134,30 @@ function result_formation() {
     display_expression.innerText = expression_text;
     display_result.innerText = result_num;
     current_num = '';
+}
+
+function calculation_algorithm(new_sign) {
+    if (last_sign === '') {
+        if (current_num !== '') {
+            result_num += parseFloat(current_num);
+        }
+    } else {
+        if (current_num !== '') {
+            calculation(last_sign);
+        } else {
+            const last_char = expression_text.slice(expression_text.length - 1,
+                expression_text.length);
+
+            if (last_char === '+' || last_char === '-' || last_char === '*'
+                || last_char === '/') {
+                last_sign = new_sign;
+                expression_text = expression_text.slice(0, expression_text.length - 1) + last_sign;
+                display_expression.innerText = expression_text;
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 function calculation(sign) {
@@ -206,7 +172,22 @@ function calculation(sign) {
             result_num = result_num * parseFloat(current_num);
             break;
         case '/':
-            result_num = result_num / parseFloat(current_num);
+            if (parseFloat(current_num) !== 0) {
+                result_num = result_num / parseFloat(current_num);
+            } else {
+                divide_by_zero = false;
+                clear_display('ошибка: деление на ноль!');
+            }
             break;
     }
+}
+
+function clear_display(text = '') {
+    display_result.innerText = '0';
+    expression_text = '';
+    display_expression.innerText = text;
+    last_sign = '';
+    current_num = '';
+    result_num = 0;
+    isZero = true;
 }
