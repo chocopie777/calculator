@@ -6,6 +6,7 @@ const multiply = document.getElementById('*');
 const divide = document.getElementById('/');
 const done = document.getElementById('=');
 const reverse = document.getElementById('+/-');
+const percent = document.getElementById('%');
 const display_result = document.getElementById('result-display');
 const display_expression = document.getElementById('expression-display');
 let isZero = true;
@@ -50,7 +51,7 @@ done.addEventListener('click', (event) => {
         if (current_num !== '') {
             calculation(last_sign);
             expression_text = parseFloat(result_num);
-            display_expression.innerText = expression_text;
+            display_expression.innerText = '';
             display_result.innerText = result_num;
             last_sign = '';
             current_num = '';
@@ -66,7 +67,22 @@ reverse.addEventListener('click', (event) => {
         }
         display_result.innerText = current_num;
     } else {
-        // TODO: когда число получилось после равно, а в current_num ничего нет
+        result_num = -result_num;
+        display_result.innerText = result_num;
+        console.log(result_num);
+    }
+});
+
+percent.addEventListener('click', (event) => {
+    if (result_num !== 0) {
+        let per_result;
+        if (last_sign === '*' || last_sign === '/') {
+            per_result = parseFloat(current_num) / 100;
+        } else {
+            per_result = (result_num * parseFloat(current_num)) / 100;
+        }
+        current_num = '' + per_result;
+        display_result.innerText = current_num;
     }
 });
 
@@ -92,11 +108,7 @@ plus.addEventListener('click', (event) => {
         }
     }
     last_sign = '+';
-    expression_text += current_num;
-    expression_text += '+';
-    display_expression.innerText = expression_text;
-    display_result.innerText = result_num;
-    current_num = '';
+    result_formation();
 });
 
 minus.addEventListener('click', (event) => {
@@ -121,11 +133,7 @@ minus.addEventListener('click', (event) => {
         }
     }
     last_sign = '-';
-    expression_text += current_num;
-    expression_text += '-';
-    display_expression.innerText = expression_text;
-    display_result.innerText = result_num;
-    current_num = '';
+    result_formation();
 });
 
 multiply.addEventListener('click', (event) => {
@@ -150,11 +158,7 @@ multiply.addEventListener('click', (event) => {
         }
     }
     last_sign = '*';
-    expression_text += current_num;
-    expression_text += '*';
-    display_expression.innerText = expression_text;
-    display_result.innerText = result_num;
-    current_num = '';
+    result_formation();
 });
 
 divide.addEventListener('click', (event) => {
@@ -179,12 +183,16 @@ divide.addEventListener('click', (event) => {
         }
     }
     last_sign = '/';
+    result_formation();
+});
+
+function result_formation() {
     expression_text += current_num;
-    expression_text += '/';
+    expression_text += last_sign;
     display_expression.innerText = expression_text;
     display_result.innerText = result_num;
     current_num = '';
-});
+}
 
 function calculation(sign) {
     switch (sign) {
