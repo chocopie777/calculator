@@ -7,7 +7,7 @@ const divide = document.getElementById('/');
 const done = document.getElementById('=');
 const reverse = document.getElementById('+/-');
 const percent = document.getElementById('%');
-const display_result = document.getElementById('result-display');
+const display_result = document.querySelector('.calculator__result-display span');
 const display_expression = document.getElementById('expression-display');
 let isZero = true;
 let expression_text = '';
