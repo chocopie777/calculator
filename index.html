@@ -14,12 +14,16 @@
 <body>
 <div class="container">
     <div class="calculator">
-        <div data-simplebar class="calculator__result-display" id="result-display">
+        <div data-simplebar data-simplebar-auto-hide="false"
+             class="calculator__result-display" id="result-display">
             <span>
             0
             </span>
         </div>
-        <div class="calculator__expression-display" id="expression-display">
+        <div class="wrap">
+            <div data-simplebar data-simplebar-auto-hide="false" class="calculator__expression-display"
+                 id="expression-display"><span></span>
+            </div>
         </div>
         <div class="wrapper">
             <div class="calculator__btns">

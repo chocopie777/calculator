@@ -8,7 +8,7 @@ const done = document.getElementById('=');
 const reverse = document.getElementById('+/-');
 const percent = document.getElementById('%');
 const display_result = document.querySelector('.calculator__result-display span');
-const display_expression = document.getElementById('expression-display');
+const display_expression = document.querySelector('.calculator__expression-display span');
 let isZero = true;
 let expression_text = '';
 let current_num = '';
